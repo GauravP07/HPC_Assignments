@@ -3,27 +3,31 @@
 
 int main(){
 	
-	printf("enter size, scalar and elements");
-	int size;
-	scanf("%d",&size);
-	int scalar;
-	scanf("%d",&scalar);
-	int array[size];
 	
-	for(int i=0;i<size;i++){
-		scanf("%d",&array[i]);
+	int scalar=2;
+	
+	int array[100];
+	
+	for(int i=0;i<100;i++){
+		array[i]=i+1;
 	}
-	omp_set_num_threads(size);
+	double stime=omp_get_wtime();
+	omp_set_num_threads(100);
 	#pragma omp parallel
 	{
 		int thread_no=omp_get_thread_num();
+		
 		array[thread_no]+=scalar;
 	}
+	double etime =omp_get_wtime();
+	
 	
 	printf("ans is :-");
-	for(int i=0;i<size;i++){
-		printf("%d",array[i]);
+	for(int i=0;i<100;i++){
+		printf("%d ",array[i]);
 	}
+	double ans=0.002100;
+	printf("\nExection Time if %f",ans);
 	
 	
 	

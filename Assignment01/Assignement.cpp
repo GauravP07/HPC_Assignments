@@ -6,9 +6,11 @@
 int main() {
 	
 	#pragma omp parallel
-	{
-	printf("Hello World from thread :-%d\n",omp_get_thread_num());
-	}
+    {
+        int thread_num = omp_get_thread_num();
+        int num_threads = omp_get_num_threads();
+        printf("Thread %d of %d: Hello!\n", thread_num, num_threads);
+    }
 	
 	
 	return 0;
