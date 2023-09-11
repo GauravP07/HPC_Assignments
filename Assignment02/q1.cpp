@@ -1,37 +1,37 @@
-#include<stdio.h>
-#include<omp.h>
+#include <stdio.h>
+#include <omp.h>
+#define VECTOR_SIZE 10000
 
-int main(){
-	
-	
-	int scalar=2;
-	
-	int array[100];
-	
-	for(int i=0;i<100;i++){
-		array[i]=i+1;
-	}
-	double stime=omp_get_wtime();
-	omp_set_num_threads(100);
-	#pragma omp parallel
-	{
-		int thread_no=omp_get_thread_num();
-		
-		array[thread_no]+=scalar;
-	}
-	double etime =omp_get_wtime();
-	
-	
-	printf("ans is :-");
-	for(int i=0;i<100;i++){
-		printf("%d ",array[i]);
-	}
-	double ans=0.002100;
-	printf("\nExection Time if %f",ans);
-	
-	
-	
-	
-	
-	return 0;
+int main()
+{
+     float vector[VECTOR_SIZE];
+     int scalar = 5;
+     
+     for (int i = 0; i < VECTOR_SIZE; i++)
+     {
+          vector[i] = i + 100.987;
+     }
+     double start_time_serial = omp_get_wtime();
+     for (int i = 0; i < VECTOR_SIZE; i++)
+     {	
+          vector[i] += scalar;
+     }
+     double end_time_serial = omp_get_wtime();
+     printf("Serial Method Time: %f seconds\n", (end_time_serial -start_time_serial));
+     for (int i = 0; i < VECTOR_SIZE; i++)
+     {
+          vector[i] = i + 100.987;
+     }
+     double start_time_parallel = omp_get_wtime();
+#pragma omp parallel for private(scalar) num_threads(100)
+     for (int i = 0; i < VECTOR_SIZE; i++)
+     {
+          vector[i] += scalar;
+     }
+     double end_time_parallel = omp_get_wtime();
+     
+     printf("Parallel Method Time: %f seconds\n", (end_time_parallel -start_time_parallel));
+     
+     return 0;
 }
+

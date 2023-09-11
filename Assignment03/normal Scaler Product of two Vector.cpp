@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<omp.h>
 #include <stdlib.h>
-#define n 1000
+#define n 100000
 
 //The reduction(+:sum) clause is added to the parallel for directive. This clause indicates 
 //that each thread should have its own local copy of the sum variable, and after the loop is completed, 
@@ -35,7 +35,7 @@ void sortDec(int v[]){
 }
 
 int main(){
-	// n=1000
+	
 	    int nums1[n], nums2[n];
     for (int i = 0; i<n; i++)
     {
@@ -45,24 +45,16 @@ int main(){
     {
         nums2[i] = 20;
     }
-    double stime=omp_get_wtime();
-    // sort(nums1);
-    // sortDec(nums2);
-  
     
-	int result=0;
-//	int no=get_thread_no;
-	#pragma omp parallel for reduction(+:result)
-	for(int i=0;i<4;i++){
-		result+=nums1[i]*nums2[i];
+    sort(nums1);
+    sortDec(nums2);
+    int sum=0;
+    double stime=omp_get_wtime();
+    for(int i=0;i<n;i++){
+    	sum+=nums1[i]+nums2[i];
 	}
-
-    double etime=omp_get_wtime();
-//	#pragma omp parallel for reduction(+:result)
-//    for (int i = 0; i < size; i++) {
-//        result += vector1[i] * vector2[i];
-//    }
-   printf("%f %f",etime ,stime);
-    printf("and time is %f", etime-stime);
+	double etime=omp_get_wtime();
+    
+	printf("sum is %d execution time : %f ",sum,etime-stime);
 	return 0;
 }
